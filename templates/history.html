@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+<h2>查詢歷史:</h2>
+<table class="table">
+<thead>
+<tr>
+<td>國道別</td>
+<td>時間</td>
+</tr>
+</thead>
+<tbody>
+{% for result in results %}
+<tr>
+<td>{{ result.highway }}</td>
+<td>{{ result.time }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock content %}

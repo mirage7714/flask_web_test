@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %} 
+查詢結果
+{% endblock title %}
+
+
+{% block content %}
+
+<h1>查詢結果: {{ count }} 筆</h1>
+<table class="table">
+<thead>
+<tr>
+<td>國道別</td>
+<td>起點交流道</td>
+<td>迄點交流道</td>
+<td>收費區位代碼</td>
+<td>方向</td>
+<td>緯度</td>
+<td>經度</td>
+</tr>
+</thead>
+
+<tbody>
+{% for result in results %}
+<tr>
+<td>{{ result.high_no }}</td>
+<td>{{ result.start }}</td>
+<td>{{ result.end }}</td>
+<td>{{ result.id }}</td>
+<td>{{ result.direction }}</td>
+<td>{{ result.lat }}</td>
+<td>{{ result.lon }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock content %}

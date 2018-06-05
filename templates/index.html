@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+<h3>選擇高速公路:</h3>
+<form action="/result" method="post">
+<select name="highway">
+<option value="one">國道一號</option>
+<option value="three">國道三號</option>
+<option value="five">國道五號</option>
+<option value="all">ALL</option>
+</select>
+<input type="submit" value="submit">
+</form>
+</div>
+{% endblock content %}
