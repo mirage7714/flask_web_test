@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %} 
+查詢結果
+{% endblock title %}
+
+
+{% block content %}
+
+<h1>查詢閘門: {{ gate }}</h1>
+<table class="table">
+<thead>
+<tr>
+<td>車種</td>
+<td>車次</td>
+<td>平均收費(元)</td>
+</tr>
+</thead>
+
+<tbody>
+{% for result in results %}
+<tr>
+<td>{{ result.car }}</td>
+<td>{{ result.count }}</td>
+<td>{{ result.price }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock content %}

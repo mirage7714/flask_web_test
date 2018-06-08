@@ -8,6 +8,14 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/query.js') }}"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script>
+  $(document).ready(function() {
+    $("#datepicker").datepicker();
+  });
+  </script>
   <style>
   .fakeimg {
       height: 200px;
@@ -35,6 +43,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/history">歷史紀錄</a>
       </li>
+	  <li class="nav-item">
+        <a class="nav-link" href="/download">資料下載</a>
+      </li>    
       <li class="nav-item">
         <a class="nav-link" href="/reset">清除紀錄</a>
       </li>    

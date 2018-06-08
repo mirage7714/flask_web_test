@@ -5,15 +5,45 @@ Spyder Editor
 This is a temporary script file.
 """
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_from_directory
 import json
 from datetime import datetime
 import sqlite3
+
+
+from pyspark import SparkContext, SparkConf
+from pyspark.sql import SparkSession, Row
+import json
 
 app = Flask(__name__)
 app.static_folder = 'static'
 
 db_path='data.db'
+
+def GetSC():
+	conf = SparkConf()
+	conf.setAppName('highway').setMaster('local[*]')
+	sc = SparkContext(conf = conf)
+	spark = SparkSession(sc)
+	return sc, spark
+
+def QueryData(gate):
+	sc, spark = GetSC()
+	data = sc.textFile('d:/code/python/web_test/TDCS_M06A_20180607_180000.csv')
+	org_data = data.map(lambda x : x.split(',')).filter(lambda x : x[2] == gate).map(lambda x : Row(car=x[0], start_gate = x[2], price = x[5])).toDF().registerTempTable('traffic')
+
+	query = 'select car, start_gate, count(*) as count, avg(price) as avg_price from traffic where start_gate = "{}" group by car, start_gate'.format(gate)
+	result = spark.sql(query).rdd.map(lambda row: row[0]+','+str(row[2])+','+str(row[3])).collect()
+
+	dict_result = []
+	for r in result:
+		dict_result.append({
+		'car':r.split(',')[0],
+		'count':r.split(',')[1],
+		'price':r.split(',')[2]
+		})
+	sc.stop()
+	return dict_result
 
 def get_db():
 	db = sqlite3.connect(db_path)
@@ -32,6 +62,28 @@ def convert_highway(high):
 @app.route('/')
 def index():
     return render_template('index.html')
+	
+@app.route('/query_gate', methods=['POST'])
+def Query():
+	gate = request.form.get('gate')
+	print('Query gate: {}'.format(gate))
+	result = QueryData(gate)
+	return render_template('gate.html',gate=gate,results=result)
+
+@app.route('/download')
+def download():
+	year=['2017','2018']
+	month=['01','02','03','04']
+	return render_template('download.html')
+	
+@app.route('/download_file', methods=['POST'])
+def download_file():
+	abs_path = 'd:/code/python/web_test/'
+	year = request.form.get('year')
+	month = request.form.get('month')
+	print('{}-{}'.format(year, month))
+	return '{}-{}'.format(year, month)
+	#return send_from_directory(abs_path,'TDCS_M06A_20180607_180000.csv')
 
 @app.route('/result', methods=['POST'])
 def filter():

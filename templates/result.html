@@ -6,7 +6,15 @@
 
 
 {% block content %}
-
+<container>
+<h3>輸入收費閘門:</h3>
+<form action="/query_gate" method="post" autocomplete="off">
+<input type="text" name="gate">
+<input type="submit" value="submit" id="btnGate">
+</form>
+</br>
+</container>
+<container>
 <h1>查詢結果: {{ count }} 筆</h1>
 <table class="table">
 <thead>
@@ -36,3 +44,4 @@
 </tbody>
 </table>
 {% endblock content %}
+</container>
